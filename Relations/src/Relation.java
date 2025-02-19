@@ -28,38 +28,77 @@ public class Relation extends RelationDeBase {
 	//renvoie le domaine de la relation courante
 	public EnsembleAbstrait domaine() {
 		//TODO
-		return null;
+		//return null;
+		EnsembleAbstrait dom = new Ensemble();
+		for(Couple c : this){
+			dom.ajouter(c.getX());
+		}
+		return dom;
 	}
 	
 	//renvoie l'image de la relation courante
 	public EnsembleAbstrait image() {
 		//TODO
-		return null;
+		//return null;
+		EnsembleAbstrait im = new Ensemble();
+		for(Couple c : this){
+			im.ajouter(c.getY());
+		}
+		return im;
 	}
 	
 	// EX 2
 	// renvoie la complémentaire de la relation courante
+	//LA COMPLEMENTAIRE AJOUTE TOUS LES COUPLES QUI N4EXISTAIENT PAS ET NE PREND PAS EN COMPTE LES EXISTANTS
 	public Relation complementaire() {
 		//TODO
-		return null;
+		//return null;
+		Relation complementaire = new Relation(depart(), arrivee());
+		for(Elt eltDepart : depart()){
+			for(Elt eltArrivee : arrivee()){
+				if (!this.contient(eltDepart,eltArrivee)){
+					complementaire.ajouter(eltDepart,eltArrivee);
+				}
+			}
+		}
+		return complementaire;
 	}
 
 	// renvoie la réciproque de la relation courante
 	public Relation reciproque() {
 		//TODO
-		return null;
+		//return null
+		Relation reciproque = new Relation(arrivee(), depart());
+		for(Elt eltDepart : depart()) {
+			for (Elt eltArrivee : arrivee()) {
+				if (this.contient(eltDepart,eltArrivee)) {
+					reciproque.ajouter(eltArrivee, eltDepart);
+				}
+			}
+		}
+		return reciproque;
 	}
 
 	// si possible, remplace la relation courante par son union avec r
 	//sinon, lance une IllegalArgumentException
 	public void ajouter(RelationInterface r) {
 		//TODO
+		if (r==null||!r.depart().equals(this.depart())||!r.arrivee().equals(this.arrivee()))
+			throw new IllegalArgumentException();
+		for(Couple couple : r) {
+			this.ajouter(couple);
+		}
 	}
 
 	// si possible, remplace this par sa différence avec r
 	//sinon, lance une IllegalArgumentException
 	public void enlever(RelationInterface r) {
 		//TODO
+		if (r==null||!r.depart().equals(this.depart())||!r.arrivee().equals(this.arrivee()))
+			throw new IllegalArgumentException();
+		for(Couple couple : r){
+			this.enlever(couple);
+		}
 	}
 
 	// si possible, remplace this par son intersection avec r
